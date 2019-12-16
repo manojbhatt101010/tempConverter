@@ -1,24 +1,27 @@
 /*
-Temperature converter from fahrenheit to celcius
+Temperature converter from fahrenheit to celsius
 and vice-versa
 */
 
-
 import java.util.Scanner;
 
-class TempConverter
-{
-	static char identifyUnit(char[] unit)
-	{
-		char[] f = "farnhtFARNHT".toCharArray(), c = "clsuCLSU0000".toCharArray();
+class TempConverter {
+
+	static char identifyUnit(String unit) {
+		String f = "farnhtFARNHT";
+		String c = "ccclsuCCCLSU";
 
 		int countF = 0, countC = 0;
-		for(int i = 0; i < unit.length; i++)
-			for(int j = 0; j < 12; j++)
-				if(unit[i] == f[j])
+		for(int i = 0; i < unit.length(); i++) 
+			for(int j = 0; j < 12; j++) 
+				if(unit.charAt(i) == f.charAt(j)) {
 					countF++;
-				else if(unit[i] == c[j])
+					break;
+				}
+				else if(unit.charAt(i) == c.charAt(j)) {
 					countC++;
+					break;
+				}
 
 		if(countF > countC)
 			return 'F';
@@ -28,41 +31,38 @@ class TempConverter
 			return 'A';
 	}
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		Scanner read = new Scanner(System.in);
 
 		System.out.print("\nEnter the Temperature: ");
-		String currentTemp = read.next();
-		char cTemp[] = currentTemp.toCharArray();
+		String temperature = read.next();
 
-		int unitIndex = currentTemp.length();
-		for(int i = 0; i < currentTemp.length(); i++)
-			if(!Character.isDigit(cTemp[i]))
-			{
-				unitIndex = i;
+		int unitStartingIndex = temperature.length();
+		for(int i = 0; i < temperature.length(); i++)
+			if(!Character.isDigit(temperature.charAt(i))) {
+				unitStartingIndex = i;
 				break;
 			}
 
-		if(unitIndex == 0)
-		{
+		double temp = Double.parseDouble(temperature.substring(0, unitStartingIndex));
+		String unit = temperature.substring(unitStartingIndex);
+
+		if(unitStartingIndex == 0)
 			System.out.println("\nNo value entered");
-			return;
+
+		else if(identifyUnit(unit) == 'F') {
+			double converted = (temp - 32) * 5 / 9;
+			System.out.println("\nEntered Temperature: " + temp + " \u00B0F");
+			System.out.println("Temperature in Celsius: " + converted + " \u00B0C\n");
 		}
 
-		if(identifyUnit(currentTemp.substring(unitIndex).toCharArray()) == 'F')
-			System.out.println("\nEntered Temperature: " + Double.parseDouble(currentTemp.substring(0, unitIndex)) + " \u00B0F\nTemperature after change: " + ((Double.parseDouble(currentTemp.substring(0, unitIndex)) - 32) * 5) / 9 + " \u00B0C\n");
-
-		else if(identifyUnit(currentTemp.substring(unitIndex).toCharArray()) == 'C')
-			System.out.println("\nEntered Temperature: " + Double.parseDouble(currentTemp.substring(0, unitIndex)) + " \u00B0C\nTemperature after change: " + ((Double.parseDouble(currentTemp.substring(0, unitIndex)) * 9) / 5) + 32 + " \u00B0F\n");
+		else if(identifyUnit(unit) == 'C') {
+			double converted = (temp * 9 / 5) + 32;
+			System.out.println("\nEntered Temperature: " + temp + " \u00B0C");
+			System.out.println("Temperature int Fahrenheit: " + converted + " \u00B0F\n");
+		}
 
 		else
 			System.out.println("\nCouldn't Identify Unit");
 	}
 }
-
-
-/*
-thanks
-	-manoj bhatt
-*/
