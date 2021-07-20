@@ -3,7 +3,7 @@ Temperature converter from fahrenheit to celsius
 and vice-versa
 */
 
-import java.util.Scanner;
+import java.util.*;
 
 class TempConverter {
 
